@@ -11,8 +11,7 @@ interface Props {
     }
 }
 
-
-function ShowPokemonPage({match: {params: {id}}}: Props) {
+function ListPokemonPage({match: {params: {id}}}: Props) {
     const currentPokemon = useSelector(selectCurrent);
     const dispatch = useDispatch();
 
@@ -28,10 +27,10 @@ function ShowPokemonPage({match: {params: {id}}}: Props) {
         <div>
             Show Pokemon:
             <div>
-               Name: {currentPokemon?.name}
+                Name: {currentPokemon?.name}
             </div>
         </div>
     );
 }
 
-export default ShowPokemonPage;
+export default ListPokemonPage;

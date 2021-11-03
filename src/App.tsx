@@ -4,17 +4,20 @@ import CounterPage from "./pages/counter";
 import TodosPage from "./pages/todos";
 import AddTodoPage from "./pages/todos/Add";
 import ShowPokemonPage from "./pages/pokemon/Show";
+import Navigation from "./components/navigation";
+
+import 'rsuite/dist/rsuite.min.css'; // or 'rsuite/dist/rsuite.min.css'
+
 
 function App() {
     return (
         <BrowserRouter>
             <Switch>
+                <Navigation/>
                 <Route exact path="/counter" component={CounterPage}/>
                 <Route exact path="/todos" component={TodosPage}/>
                 <Route exact path="/todos/add" component={AddTodoPage}/>
-                <Route exact path="/pokemon/show" component={ShowPokemonPage}/>
-
-
+                <Route exact path="/pokemon/show/:id" component={ShowPokemonPage}/>
                 {/*<Route exact path="/publicaciones/:userId" component={Publicaciones} />*/}
             </Switch>
         </BrowserRouter>
