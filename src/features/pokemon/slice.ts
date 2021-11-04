@@ -1,48 +1,38 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 
-type Pokemon = {
+export type Pokemon = {
     id: number;
     name: string;
     height: number;
     weight: number;
+    sprites: {
+        other: {
+            dream_world: {
+                front_default: string;
+            }
+        }
+    }
 };
 
 export interface PokemonState {
-    list: {
-        total_elements: number;
-        current_page: number;
-        offset: number;
-        limit: number;
-        prev_page: number
-        next_page: number
-        last_page: number;
-        data: Pokemon[]
-    };
+    filtered_data: Pokemon[];
+    all_data: Pokemon[];
     current: Pokemon | null;
     status: 'idle' | 'loading' | 'failed';
 }
 
 const initialState: PokemonState = {
     current: null,
-    list: {
-        total_elements: 0,
-        current_page: 1,
-        offset: 0,
-        limit: 100,
-        prev_page: 0,
-        next_page: 1,
-        last_page: 1,
-        data: []
-    },
+    filtered_data: [],
+    all_data: [],
     status: 'idle'
 };
 
-export const fetchById = createAsyncThunk(
-    'pokemon/fetchById',
-    async (userId: number) => {
-        debugger
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${userId}`)
+export const fetchByName = createAsyncThunk(
+    'pokemon/fetchByName',
+    async (name: string) => {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
         return await response.json()
     }
 );
@@ -50,19 +40,10 @@ export const fetchById = createAsyncThunk(
 
 export const fetchAll = createAsyncThunk(
     'pokemon/fetchAll',
-    async ({next, prev}: { next: boolean, prev: boolean }, {getState}) => {
-        const {pokemon} = getState() as { pokemon: PokemonState };
-        let limit = pokemon.list.limit;
-        let offset = 0;
-        if (next) {
-            offset = pokemon.list.offset + pokemon.list.limit;
-        }
-        if (prev) {
-            offset = pokemon.list.offset - pokemon.list.limit;
-        }
-
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
-        return await response.json()
+    async () => {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=1118&offset=0`)
+        const responseData = await response.json()
+        return responseData.results
     }
 );
 
@@ -70,29 +51,48 @@ export const fetchAll = createAsyncThunk(
 export const pokemonSlice = createSlice({
     name: 'pokemon',
     initialState,
-    reducers: {},
+    reducers: {
+        filterPokemon(
+            state: PokemonState,
+            action: PayloadAction<string>
+        ) {
+            if (action.payload === "") {
+                state.filtered_data = state.all_data?.slice(0, 15)
+            } else {
+                state.filtered_data = state.all_data
+                    .filter(pokemon => pokemon.name.includes(action.payload.toLowerCase()))?.slice(0, 15)
+            }
+
+        },
+        resetCurrent(state: PokemonState,
+                     action: PayloadAction) {
+            state.current = initialState.current
+        }
+
+    },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchById.pending, (state, action) => {
-                debugger;
+            .addCase(fetchByName.pending, (state, action) => {
                 state.status = 'loading';
 
             })
-            .addCase(fetchById.fulfilled, (state, action: PayloadAction<Pokemon>) => {
-                debugger;
+            .addCase(fetchByName.fulfilled, (state, action: PayloadAction<Pokemon>) => {
                 state.status = 'idle';
                 state.current = action.payload;
             })
-            .addCase(fetchAll.fulfilled, (state , action: PayloadAction<[Pokemon]>) => {
-                debugger;
+            .addCase(fetchAll.pending, (state, action) => {
+                state.status = 'loading';
+
+            })
+            .addCase(fetchAll.fulfilled, (state, action: PayloadAction<[Pokemon]>) => {
                 state.status = 'idle';
-                state.list.data = action.payload;
+                state.all_data = action.payload;
             });
     },
 });
 
-// export const {} = pokemonSlice.actions;
+export const {filterPokemon, resetCurrent} = pokemonSlice.actions;
 
 export const selectCurrent = (state: RootState) => state.pokemon.current;
-
+export const selectFilteredList = (state: RootState) => state.pokemon.filtered_data;
 export default pokemonSlice.reducer;

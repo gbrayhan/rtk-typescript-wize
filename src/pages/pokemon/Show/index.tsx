@@ -1,36 +1,42 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 
-import {fetchById, selectCurrent} from '../../../features/pokemon/slice'
+import {fetchByName, resetCurrent, selectCurrent} from '../../../features/pokemon/slice'
+import {CardPokemon, ImageCard, TitleCard, Wrapper} from "./index.styled";
 
 interface Props {
     match: {
         params: {
-            id: number
+            name: string
         }
     }
 }
 
 
-function ShowPokemonPage({match: {params: {id}}}: Props) {
+function ShowPokemonPage({match: {params: {name}}}: Props) {
     const currentPokemon = useSelector(selectCurrent);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const getPokemon = async () => {
-            await dispatch(fetchById(id));
+            await dispatch(fetchByName(name));
         };
         getPokemon().then(r => {
         });
-    }, [dispatch, id]);
+        return (() => {
+            dispatch(resetCurrent())
+        })
+    }, [dispatch, name]);
 
     return (
-        <div>
-            Show Pokemon:
-            <div>
-               Name: {currentPokemon?.name}
-            </div>
-        </div>
+        <Wrapper>
+            <CardPokemon>
+                <TitleCard>
+                    {currentPokemon?.name}
+                </TitleCard>
+                <ImageCard src={currentPokemon?.sprites.other.dream_world.front_default}/>
+            </CardPokemon>
+        </Wrapper>
     );
 }
 

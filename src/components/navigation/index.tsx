@@ -1,17 +1,22 @@
 import React from 'react';
 import {Nav} from 'rsuite'
-import DashboardIcon from '@rsuite/icons/Dashboard';
+import {useHistory} from "react-router-dom";
+import {HomeStyled, WrapperNav} from "./index.styled";
+
 function Navigation() {
+    const history = useHistory();
+    const handleRoute = (route: string) => {
+        history.push(route);
+    };
+
     return (
-        <div>
+        <WrapperNav>
             <Nav>
-                <Nav.Item icon={<DashboardIcon />}>Home</Nav.Item>
-                <Nav.Item>News</Nav.Item>
-                <Nav.Item>Solutions</Nav.Item>
-                <Nav.Item>Products</Nav.Item>
-                <Nav.Item>About</Nav.Item>
+                <Nav.Item icon={<HomeStyled size="1.1rem"/>}
+                          onSelect={() => handleRoute("/pokemon/list")}>Home</Nav.Item>
+                <Nav.Item>Cart</Nav.Item>
             </Nav>
-        </div>
+        </WrapperNav>
     );
 }
 
