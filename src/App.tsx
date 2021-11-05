@@ -16,14 +16,10 @@ function App() {
         <BrowserRouter>
             <Navigation/>
             <Switch>
-                <Route exact path="/counter" component={CounterPage}/>
-                <Route exact path="/todos" component={TodosPage}/>
-                <Route exact path="/todos/add" component={AddTodoPage}/>
+                <Route exact path="/" component={ListPokemonPage}/>
                 <Route exact path="/pokemon/show/:name" component={ShowPokemonPage}/>
                 <Route exact path="/pokemon/list" component={ListPokemonPage}/>
                 <Route exact path="/pokemon/cart" component={CartPokemonPage}/>
-
-                {/*<Route exact path="/publicaciones/:userId" component={Publicaciones} />*/}
             </Switch>
         </BrowserRouter>
     );

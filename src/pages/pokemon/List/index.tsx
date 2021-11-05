@@ -12,7 +12,6 @@ function ListPokemonPage() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("enter")
         const getListPokemon = async () => {
             await dispatch(fetchAll());
         };

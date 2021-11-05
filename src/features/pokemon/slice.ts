@@ -79,7 +79,7 @@ export const pokemonSlice = createSlice({
         addToCart(state: PokemonState,
                   action: PayloadAction<number>) {
             let exist: boolean = false;
-            debugger
+
             state.cart = state.cart.map((item) => {
                 if (item.pokemon?.name === state.current?.name) {
                     item.quantity = item.quantity + action.payload
