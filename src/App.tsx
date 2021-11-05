@@ -8,6 +8,7 @@ import Navigation from "./components/navigation";
 import ListPokemonPage from "./pages/pokemon/List";
 
 import 'rsuite/dist/rsuite.min.css';
+import CartPokemonPage from "./pages/pokemon/Cart";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                 <Route exact path="/todos/add" component={AddTodoPage}/>
                 <Route exact path="/pokemon/show/:name" component={ShowPokemonPage}/>
                 <Route exact path="/pokemon/list" component={ListPokemonPage}/>
+                <Route exact path="/pokemon/cart" component={CartPokemonPage}/>
 
                 {/*<Route exact path="/publicaciones/:userId" component={Publicaciones} />*/}
             </Switch>
