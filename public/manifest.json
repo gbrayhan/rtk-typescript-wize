@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "React RTK App",
+  "name": "Boilerplate React RTK Typescript",
   "icons": [
     {
       "src": "favicon.ico",
