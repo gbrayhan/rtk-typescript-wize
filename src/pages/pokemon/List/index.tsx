@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchAll, filterPokemon, selectFilteredList} from '../../../features/pokemon/slice'
 import CardPokemon from "../../../components/CardPokemon";
 import {Search, Wrapper} from "./index.styled";
-import {Input} from 'rsuite'
+import {CustomInputGroup} from "../../../components/inputs/CursomInputGroup";
 
 
 function ListPokemonPage() {
@@ -26,10 +26,13 @@ function ListPokemonPage() {
     return (
         <div>
             <Search>
-                <Input placeholder="Search Pokemon"
-                       onChange={(value: any, e: React.SyntheticEvent) => {
-                           dispatch(filterPokemon(value));
-                       }}/>
+                <CustomInputGroup
+                    size="lg"
+                    placeholder="Search Pokemon"
+                    onChange={(value: any) => {
+                        dispatch(filterPokemon(value));
+                    }}/>
+
             </Search>
             <Wrapper>
                 {filteredListPokemon.map(pokemon => (<CardPokemon pokemon={pokemon}></CardPokemon>))}

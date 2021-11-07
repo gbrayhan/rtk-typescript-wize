@@ -5,10 +5,11 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content:center;
+  justify-content: center;
 `;
 
 
 export const Search = styled.div`
-    margin: 1rem;
+  margin: 1rem;
+  height: 3rem;
 `;
